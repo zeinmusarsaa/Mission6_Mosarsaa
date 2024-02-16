@@ -20,3 +20,27 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.get-to-know-joel-container {
+    text-align: center;
+}
+
+.baconsale-link-container {
+    margin-top: 20px;
+}
+
+.baconsale-image {
+    max-width: 100%;
+    height: auto;
+    border: 3px solid #ddd;
+    border-radius: 8px;
+}
+
+a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+    a:hover {
+        text-decoration: underline;
+    }
