@@ -6,6 +6,11 @@
 
 <form asp-controller="Movies" asp-action="AddMovie" method="post">
     <div class="form-group">
+        <label for="category">Category</label>
+        <input type="text" class="form-control" id="category" name="Category" required>
+    </div>
+
+    <div class="form-group">
         <label for="title">Title</label>
         <input type="text" class="form-control" id="title" name="title" required>
     </div>
