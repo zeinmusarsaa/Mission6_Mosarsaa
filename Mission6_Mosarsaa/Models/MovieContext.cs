@@ -10,6 +10,8 @@ namespace Mission6_Mosarsaa.Models
         }
 
         public DbSet<Movie> Movies { get; set; }
+        public DbSet<CategoryClass> Categories { get; set; } // Add this line to handle categories
     }
 }
+
 
