@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Mission6_Mosarsaa.Models;
+using System.Linq;
 using System.Threading.Tasks;
 
 public class MoviesController : Controller
 {
-    private readonly MovieContext _context;
+    private MovieContext _context;
 
     public MoviesController(MovieContext context)
     {
@@ -12,16 +14,62 @@ public class MoviesController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddMovie(Movie movie)
+    public async Task<JsonResult> AddMovie(Movie movie)
     {
         if (ModelState.IsValid)
         {
             _context.Movies.Add(movie);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "Home"); // Or wherever you'd like to redirect
+            return Json(new { success = true, message = "Movie added successfully." });
+        }
+        return Json(new { success = false, message = "Invalid movie data." });
+    }
+
+    [HttpGet]
+    public async Task<JsonResult> GetMovie(int id)
+    {
+        var movie = await _context.Movies.FindAsync(id);
+        if (movie == null)
+        {
+            return Json(new { success = false, message = "Movie not found." });
+        }
+        return Json(new { success = true, data = movie });
+    }
+
+    [HttpPost]
+    public async Task<JsonResult> Edit(int id, Movie movie)
+    {
+        if (id != movie.MovieId)
+        {
+            return Json(new { success = false, message = "Bad Request." });
         }
 
-        return View(movie);
+        if (ModelState.IsValid)
+        {
+            _context.Entry(movie).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return Json(new { success = true, message = "Movie updated successfully." });
+        }
+
+        return Json(new { success = false, message = "Invalid movie data." });
+    }
+
+    [HttpPost]
+    public async Task<JsonResult> Delete(int id)
+    {
+        var movie = await _context.Movies.FindAsync(id);
+        if (movie == null)
+        {
+            return Json(new { success = false, message = "Movie not found." });
+        }
+
+        _context.Movies.Remove(movie);
+        await _context.SaveChangesAsync();
+        return Json(new { success = true, message = "Movie deleted successfully." });
     }
 }
+
+
+
+
 

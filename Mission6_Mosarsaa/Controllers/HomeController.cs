@@ -41,6 +41,7 @@ namespace Mission6_Mosarsaa.Controllers
 
 
 
+
         public IActionResult AllMovies()
         {
             var movies = _context.Movies.Include(m => m.Category).ToList();

@@ -44,3 +44,24 @@ a {
     a:hover {
         text-decoration: underline;
     }
+
+/* CSS to make the form and table scrollable */
+.table-container {
+    max-height: 400px; /* Adjust height as needed */
+    overflow-y: auto;
+}
+
+/* Additional styling for the form and table */
+.col-md-6 {
+    padding: 20px; /* Add padding to create space between elements */
+}
+
+form {
+    border: 1px solid #ccc;
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+h2 {
+    margin-top: 0;
+}

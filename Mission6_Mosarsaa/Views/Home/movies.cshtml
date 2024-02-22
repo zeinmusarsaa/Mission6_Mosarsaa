@@ -4,7 +4,8 @@
 
 <h2>Add a New Movie to the Collection</h2>
 
-<form asp-controller="Movies" asp-action="AddMovie" method="post">
+<form id="addMovieForm"  asp-controller="Movies" asp-action="AddMovie" method="post">
+    <input type="hidden" id="movieId" name="MovieId" value="0">
     <div class="form-group">
         <label for="categoryId">Category</label>
         <select class="form-control" id="categoryId" name="CategoryId" required>
@@ -64,39 +65,43 @@
 </form>
 
 <h2>Movie Collection</h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Category</th>
-            <th>Year</th>
-            <th>Director</th>
-            <th>Rating</th>
-            <th>Edited</th>
-            <th>Copied to Plex</th>
-            <th>Lent To</th>
-            <th>Notes</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var movie in Model.Movies)
-        {
-            <tr>
-                <td>@movie.Title</td>
-                <td>@(movie.Category != null ? movie.Category.Category : "No Category")</td>
-                <td>@movie.Year</td>
-                <td>@movie.Director</td>
-                <td>@movie.Rating</td>
-                <td>@(movie.Edited ? "Yes" : "No")</td>
-                <td>@(movie.CopiedToPlex ? "Yes" : "No")</td>
-                <td>@(movie.LentTo ?? "N/A")</td>
-                <td>@(movie.Notes ?? "N/A")</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@movie.MovieId" class="btn btn-primary">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@movie.MovieId" class="btn btn-danger">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="row">
+    <div class="col-md-6">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Year</th>
+                    <th>Director</th>
+                    <th>Rating</th>
+                    <th>Edited</th>
+                    <th>Copied to Plex</th>
+                    <th>Lent To</th>
+                    <th>Notes</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var movie in Model.Movies)
+                {
+                    <tr>
+                        <td>@movie.Title</td>
+                        <td>@(movie.Category != null ? movie.Category.Category : "No Category")</td>
+                        <td>@movie.Year</td>
+                        <td>@movie.Director</td>
+                        <td>@movie.Rating</td>
+                        <td>@(movie.Edited ? "Yes" : "No")</td>
+                        <td>@(movie.CopiedToPlex ? "Yes" : "No")</td>
+                        <td>@(movie.LentTo ?? "N/A")</td>
+                        <td>@(movie.Notes ?? "N/A")</td>
+                        <td>
+                            <a href="javascript:void(0)" onclick="editMovie(@movie.MovieId, '@movie.Title', @movie.CategoryId, @movie.Year, '@movie.Director', '@movie.Rating', @Html.Raw(Json.Serialize(movie.Edited)), @Html.Raw(Json.Serialize(movie.CopiedToPlex)), '@movie.LentTo', '@movie.Notes')" class="btn btn-primary">Edit</a>
+                            <a href="javascript:void(0)" onclick="deleteMovie(@movie.MovieId)" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+     </div>
+ </div>
