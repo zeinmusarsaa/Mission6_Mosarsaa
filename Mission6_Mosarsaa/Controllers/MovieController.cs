@@ -51,7 +51,8 @@ public class MoviesController : Controller
             return Json(new { success = true, message = "Movie updated successfully." });
         }
 
-        return Json(new { success = false, message = "Invalid movie data." });
+        return Json(new { success = false, message = "Invalid movie data.", errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage) });
+
     }
 
     [HttpPost]

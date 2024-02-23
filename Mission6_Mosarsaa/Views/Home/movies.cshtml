@@ -97,7 +97,7 @@
                         <td>@(movie.Notes ?? "N/A")</td>
                         <td>
                             <a href="javascript:void(0)" onclick="editMovie(@movie.MovieId, '@movie.Title', @movie.CategoryId, @movie.Year, '@movie.Director', '@movie.Rating', @Html.Raw(Json.Serialize(movie.Edited)), @Html.Raw(Json.Serialize(movie.CopiedToPlex)), '@movie.LentTo', '@movie.Notes')" class="btn btn-primary">Edit</a>
-                            <a href="javascript:void(0)" onclick="deleteMovie(@movie.MovieId)" class="btn btn-danger">Delete</a>
+                            <a  href="javascript:void(0)" onclick="deleteMovie(@movie.MovieId)" class="btn btn-danger">Delete</a>
                         </td>
                     </tr>
                 }
