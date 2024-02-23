@@ -43,7 +43,7 @@
     // Function to handle updating an existing movie
     function updateMovie(movieId) {
         var formData = $('#addMovieForm').serialize();
-        console.log(formData); 
+
 
         formData = formData.replace(/Edited=on/g, 'Edited=true');
         formData = formData.replace(/CopiedToPlex=on/g, 'CopiedToPlex=true');
