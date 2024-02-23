@@ -3,6 +3,16 @@
     // Function to handle adding a new movie
     function addMovie() {
         var formData = $('#addMovieForm').serialize();
+        formData = formData.replace(/Edited=on/g, 'Edited=true');
+        formData = formData.replace(/CopiedToPlex=on/g, 'CopiedToPlex=true');
+
+        // Add false for unchecked checkboxes
+        if (!formData.includes('Edited=')) {
+            formData += '&Edited=false';
+        }
+        if (!formData.includes('CopiedToPlex=')) {
+            formData += '&CopiedToPlex=false';
+        }
 
         $.ajax({
             url: '/movies/AddMovie',
@@ -35,6 +45,17 @@
         var formData = $('#addMovieForm').serialize();
         console.log(formData); 
 
+        formData = formData.replace(/Edited=on/g, 'Edited=true');
+        formData = formData.replace(/CopiedToPlex=on/g, 'CopiedToPlex=true');
+
+        // Add false for unchecked checkboxes
+        if (!formData.includes('Edited=')) {
+            formData += '&Edited=false';
+        }
+        if (!formData.includes('CopiedToPlex=')) {
+            formData += '&CopiedToPlex=false';
+        }
+
         $.ajax({
             url: '/movies/Edit/' + movieId,
             type: 'POST',
@@ -51,8 +72,6 @@
                 row.find('td').eq(6).text(response.copiedToPlex ? 'Yes' : 'No');
                 row.find('td').eq(7).text(response.lentTo || 'N/A');
                 row.find('td').eq(8).text(response.notes || 'N/A');
-                
-
             },
             error: function () {
                 alert("Error updating movie");
@@ -69,8 +88,9 @@
             addMovie();
         } else {
             updateMovie(movieId);
-            location.reload();
         }
+        location.reload();
+ 
     });
 
     // Function to populate the form for editing
