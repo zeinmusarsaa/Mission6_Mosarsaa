@@ -10,6 +10,8 @@ namespace Mission6_Mosarsaa.Models
 
         public CategoryClass? Category { get; set; }
         public string Title { get; set; }
+
+        [Range(1888, int.MaxValue, ErrorMessage = "Year must be 1888 or later")]
         public int Year { get; set; }
         public string? Director { get; set; }
         public string? Rating { get; set; }
