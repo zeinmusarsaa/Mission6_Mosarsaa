@@ -32,7 +32,7 @@
                     + '<td>' + (response.notes || 'N/A') + '</td>'
                     + '</tr>';
                 $('table tbody').append(newRow);
-                location.reload();
+                location.reload(); 
             },
             error: function () {
                 alert("Error adding movie");
@@ -72,6 +72,7 @@
                 row.find('td').eq(6).text(response.copiedToPlex ? 'Yes' : 'No');
                 row.find('td').eq(7).text(response.lentTo || 'N/A');
                 row.find('td').eq(8).text(response.notes || 'N/A');
+                location.reload();
             },
             error: function () {
                 alert("Error updating movie");
@@ -89,7 +90,6 @@
         } else {
             updateMovie(movieId);
         }
-        location.reload();
  
     });
 
