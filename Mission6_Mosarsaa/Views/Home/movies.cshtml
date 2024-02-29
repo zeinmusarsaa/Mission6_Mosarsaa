@@ -1,54 +1,114 @@
 ﻿@{
     ViewData["Title"] = "New Movie Entry";
 }
-
+@model Mission6_Mosarsaa.Models.MoviesViewModel
 <h2>Add a New Movie to the Collection</h2>
 
-<form asp-controller="Movies" asp-action="AddMovie" method="post">
+<form id="addMovieForm"  asp-controller="Movies" asp-action="AddMovie" method="post">
+    <input type="hidden" id="movieId" name="MovieId" value="0">
     <div class="form-group">
-        <label for="category">Category</label>
-        <input type="text" class="form-control" id="category" name="Category" required>
+        <label for="categoryId">Category</label>
+        <select class="form-control" id="categoryId" name="CategoryId" required>
+            @foreach (var category in Model.Categories)
+            {
+                <option value="@category.CategoryId">@category.Category</option>
+            }
+        </select>
     </div>
 
     <div class="form-group">
         <label for="title">Title</label>
-        <input type="text" class="form-control" id="title" name="title" required>
+        <input type="text" class="form-control" id="title" name="Title" required>
     </div>
 
     <div class="form-group">
         <label for="year">Year</label>
-        <input type="number" class="form-control" id="year" name="year" required>
+        <input type="number" class="form-control" id="year" name="Year" required min="1888">
     </div>
 
     <div class="form-group">
         <label for="director">Director</label>
-        <input type="text" class="form-control" id="director" name="director" required>
+        <input type="text" class="form-control" id="director" name="Director" required>
     </div>
 
     <div class="form-group">
         <label for="rating">Rating</label>
-        <select class="form-control" id="rating" name="rating" required>
-            <option>G</option>
-            <option>PG</option>
-            <option>PG-13</option>
-            <option>R</option>
+        <select class="form-control" id="rating" name="Rating" required>
+            @{
+
+                var uniqueRatings = Model.Movies.ToList().Select(m => m.Rating).Distinct().ToList();
+
+
+                foreach (var rating in uniqueRatings)
+                {
+                    <option value="@rating">@rating</option>
+                }
+            }
         </select>
     </div>
 
     <div class="form-check">
-        <input type="checkbox" class="form-check-input" id="edited" name="edited">
+        <input type="checkbox" class="form-check-input" id="edited" name="Edited">
         <label class="form-check-label" for="edited">Edited</label>
     </div>
 
     <div class="form-group">
         <label for="lentTo">Lent To</label>
-        <input type="text" class="form-control" id="lentTo" name="lentTo">
+        <input type="text" class="form-control" id="lentTo" name="LentTo">
+    </div>
+
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="copiedToPlex" name="CopiedToPlex">
+        <label class="form-check-label" for="copiedToPlex">Copied to Plex</label>
     </div>
 
     <div class="form-group">
         <label for="notes">Notes (Max 25 characters)</label>
-        <input type="text" class="form-control" id="notes" name="notes" maxlength="25">
+        <input type="text" class="form-control" id="notes" name="Notes" maxlength="25">
     </div>
 
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+
+<h2>Movie Collection</h2>
+<div class="row">
+    <div class="col-md-12"> <!-- Full width column -->
+        <div class="table-responsive" style="height: 400px; overflow-y: scroll;"> <!-- Scrollable container -->
+            <table class="table table-striped table-bordered table-hover"> <!-- Bootstrap table classes -->
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Year</th>
+                    <th>Director</th>
+                    <th>Rating</th>
+                    <th>Edited</th>
+                    <th>Copied to Plex</th>
+                    <th>Lent To</th>
+                    <th>Notes</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var movie in Model.Movies)
+                {
+                    <tr>
+                        <td>@movie.Title</td>
+                        <td>@(movie.Category != null ? movie.Category.Category : "No Category")</td>
+                        <td>@movie.Year</td>
+                        <td>@movie.Director</td>
+                        <td>@movie.Rating</td>
+                        <td>@(movie.Edited ? "Yes" : "No")</td>
+                        <td>@(movie.CopiedToPlex ? "Yes" : "No")</td>
+                        <td>@(movie.LentTo ?? "N/A")</td>
+                        <td>@(movie.Notes ?? "N/A")</td>
+                        <td>
+                            <a href="javascript:void(0)" onclick="editMovie(@movie.MovieId, '@movie.Title', @movie.CategoryId, @movie.Year, '@movie.Director', '@movie.Rating', @Html.Raw(Json.Serialize(movie.Edited)), @Html.Raw(Json.Serialize(movie.CopiedToPlex)), '@movie.LentTo', '@movie.Notes')" class="btn btn-primary">Edit</a>
+                            <a href="javascript:void(0)" onclick="deleteMovie(@movie.MovieId)" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+     </div>
+ </div>
